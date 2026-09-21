@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>A typed .NET SDK for Jev decisions through TypeSafe, OpenRouter, Vercel, and custom endpoints.</Description>
+    <Description>.NET 10 SDK for Jev decisions through TypeSafe, OpenRouter, Vercel AI Gateway, and compatible endpoints.</Description>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../JevSharp.Core/JevSharp.Core.csproj" PrivateAssets="all" />

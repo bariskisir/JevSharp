@@ -2,7 +2,7 @@
 
 ## Purpose
 
-JevSharp is a typed .NET 10 SDK for evaluating a shared state against Choice, Score, and Noul questions. It supports the TypeSafe API, OpenRouter, Vercel AI Gateway, and compatible custom endpoints.
+JevSharp is .NET 10 SDK for evaluating a shared state against Choice, Score, and Noul questions. It supports the TypeSafe API, OpenRouter, Vercel AI Gateway, and compatible custom endpoints.
 
 Keep the SDK focused on Jev evaluation. Provider-specific request and response differences belong in protocol implementations, while the public surface remains provider-neutral.
 
