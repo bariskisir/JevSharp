@@ -1,0 +1,69 @@
+name: Publish NuGet
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      package-version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate release tag
+        id: version
+        shell: pwsh
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          $version = ./src/scripts/Get-ReleaseVersion.ps1 -Tag $env:RELEASE_TAG
+          Add-Content -LiteralPath $env:GITHUB_OUTPUT -Value "version=$version"
+
+  verify:
+    needs: version
+    uses: ./.github/workflows/ci.yml
+    with:
+      package-version: ${{ needs.version.outputs.package-version }}
+
+  publish:
+    needs: [version, verify]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.401
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: packages-ubuntu-latest
+          path: artifacts/packages
+      - name: Authenticate to NuGet
+        id: login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: bariskisir
+      - name: Publish packages and matching symbols
+        shell: pwsh
+        env:
+          NUGET_AUTH_TOKEN: ${{ steps.login.outputs.NUGET_API_KEY }}
+          PACKAGE_VERSION: ${{ needs.version.outputs.package-version }}
+        run: |
+          foreach ($id in @('JevSharp.Abstractions', 'JevSharp.Core', 'JevSharp')) {
+            $package = "artifacts/packages/$id.$env:PACKAGE_VERSION.nupkg"
+            dotnet nuget push $package --api-key $env:NUGET_AUTH_TOKEN --source https://api.nuget.org/v3/index.json --skip-duplicate
+            if ($LASTEXITCODE -ne 0) {
+              throw "NuGet publication failed for $id."
+            }
+          }

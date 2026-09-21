@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Libraries/">
+    <Project Path="JevSharp.Abstractions/JevSharp.Abstractions.csproj" />
+    <Project Path="JevSharp.Core/JevSharp.Core.csproj" />
+    <Project Path="JevSharp/JevSharp.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="JevSharp.Tests/JevSharp.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Samples/">
+    <Project Path="Samples/JevSharp.Console/JevSharp.Console.csproj" />
+    <Project Path="Samples/JevSharp.Web/JevSharp.Web.csproj" />
+  </Folder>
+</Solution>

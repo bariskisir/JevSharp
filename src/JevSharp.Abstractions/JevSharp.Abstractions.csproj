@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Typed contracts, models, authentication, and exceptions for JevSharp.</Description>
+  </PropertyGroup>
+</Project>

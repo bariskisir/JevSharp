@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>A typed .NET SDK for Jev decisions through TypeSafe, OpenRouter, Vercel, and custom endpoints.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../JevSharp.Core/JevSharp.Core.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+  </ItemGroup>
+</Project>

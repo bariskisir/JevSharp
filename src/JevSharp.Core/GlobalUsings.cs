@@ -1,0 +1,11 @@
+global using JevSharp.Abstractions.Authentication;
+global using JevSharp.Abstractions.Clients;
+global using JevSharp.Abstractions.Exceptions;
+global using JevSharp.Abstractions.Models;
+global using JevSharp.Abstractions.Protocols;
+global using JevSharp.Abstractions.Requests;
+global using JevSharp.Abstractions.Responses;
+global using JevSharp.Core.Authentication;
+global using JevSharp.Core.Configuration;
+global using JevSharp.Core.Protocols;
+global using JevSharp.Core.Transport;

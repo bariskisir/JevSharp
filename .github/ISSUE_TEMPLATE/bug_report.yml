@@ -1,0 +1,28 @@
+name: Bug report
+description: Report a reproducible problem in JevSharp.
+body:
+  - type: input
+    id: version
+    attributes:
+      label: JevSharp version
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider
+      options: [TypeSafe, OpenRouter, Vercel, Custom, Not provider-specific]
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include expected/actual behavior and sanitized code. Never include API keys or customer data.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and diagnostics
+      description: Include .NET version, operating system, and safe exception metadata.
