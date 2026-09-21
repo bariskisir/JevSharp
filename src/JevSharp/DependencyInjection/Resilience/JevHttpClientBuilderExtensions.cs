@@ -1,3 +1,4 @@
+using JevSharp.Core.Transport;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http.Resilience;
 using Polly;
@@ -20,8 +21,9 @@ public static class JevHttpClientBuilderExtensions
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(configure);
-        var options = new JevResilienceOptions();
-        configure(options);
+        var configured = new JevResilienceOptions();
+        configure(configured);
+        var options = configured with { };
         options.Validate();
 
         builder.AddHttpMessageHandler(() => new JevResilienceExceptionHandler());
@@ -30,6 +32,10 @@ public static class JevHttpClientBuilderExtensions
             pipeline.AddConcurrencyLimiter(options.PermitLimit, options.QueueLimit);
             pipeline.AddCircuitBreaker(new HttpCircuitBreakerStrategyOptions
             {
+                ShouldHandle = args => new ValueTask<bool>(!args.Context.CancellationToken.IsCancellationRequested
+                    && (args.Outcome.Result is { } response
+                        ? HttpFailureClassifier.IsTransient(response.StatusCode)
+                        : HttpFailureClassifier.IsTransient(args.Outcome.Exception))),
                 FailureRatio = options.FailureRatio,
                 MinimumThroughput = options.MinimumThroughput,
                 SamplingDuration = options.SamplingDuration,

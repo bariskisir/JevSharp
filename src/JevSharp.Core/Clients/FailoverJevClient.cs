@@ -14,7 +14,7 @@ public sealed class FailoverJevClient : IJevClient
             throw new ArgumentException("A failover client requires at least two non-null clients.", nameof(clients));
         }
 
-        this.clients = clients;
+        this.clients = clients.ToArray();
     }
 
     /// <inheritdoc />
@@ -32,7 +32,7 @@ public sealed class FailoverJevClient : IJevClient
             }
             catch (JevException exception) when (CanFailOver(exception))
             {
-                failures.Add(exception);
+                AddFailures(failures, exception);
             }
         }
 
@@ -54,12 +54,29 @@ public sealed class FailoverJevClient : IJevClient
     /// <summary>Restricts failover to failures that may succeed through another provider.</summary>
     private static bool CanFailOver(JevException exception) => exception switch
     {
+        JevFailoverException aggregate => aggregate.Failures.All(CanFailOver),
         JevTransportException { IsTransient: true } => true,
         JevTimeoutException => true,
         JevRateLimitException => true,
         JevCircuitOpenException => true,
         JevConcurrencyLimitException => true,
-        JevApiException api => (int)api.StatusCode is 408 or 429 or 500 or 502 or 503 or 504 or 524 or 529,
+        JevApiException api => HttpFailureClassifier.IsTransient(api.StatusCode),
         _ => false
     };
+
+    /// <summary>Preserves leaf failures in attempt order when nested chains are exhausted.</summary>
+    private static void AddFailures(List<JevException> failures, JevException exception)
+    {
+        if (exception is JevFailoverException aggregate)
+        {
+            foreach (var failure in aggregate.Failures)
+            {
+                AddFailures(failures, failure);
+            }
+        }
+        else
+        {
+            failures.Add(exception);
+        }
+    }
 }

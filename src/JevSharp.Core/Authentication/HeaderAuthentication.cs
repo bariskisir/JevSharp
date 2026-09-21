@@ -18,11 +18,7 @@ public sealed class HeaderAuthentication : IJevAuthentication
             foreach (var (name, value) in headers)
             {
                 if (string.IsNullOrWhiteSpace(name) || value is null || value.Any(char.IsControl)
-                    || name.Equals("Host", StringComparison.OrdinalIgnoreCase)
-                    || name.StartsWith("Content-", StringComparison.OrdinalIgnoreCase)
-                    || IsProtocolHeader(name)
-                    || name.Equals("Transfer-Encoding", StringComparison.OrdinalIgnoreCase)
-                    || name.Equals("Connection", StringComparison.OrdinalIgnoreCase))
+                    || IsReservedHeader(name))
                 {
                     throw new ArgumentException("An authentication header is invalid or reserved.", nameof(headers));
                 }
@@ -59,6 +55,12 @@ public sealed class HeaderAuthentication : IJevAuthentication
 
         return ValueTask.CompletedTask;
     }
+
+    /// <summary>Identifies headers owned by HTTP or a built-in protocol rather than authentication.</summary>
+    internal static bool IsReservedHeader(string name) => name.StartsWith("Content-", StringComparison.OrdinalIgnoreCase)
+        || IsProtocolHeader(name)
+        || new[] { "Host", "Connection", "Transfer-Encoding", "Trailer", "TE", "Upgrade", "Expect", "Accept", "User-Agent" }
+            .Contains(name, StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Identifies exact headers owned by the Vercel protocol.</summary>
     /// <param name="name">The header name to inspect.</param>

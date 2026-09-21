@@ -19,6 +19,12 @@
       <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\..\JevSharp.Core\bin\$(Configuration)\$(TargetFramework)\JevSharp.Core.xml">
         <TargetPath>JevSharp.Core.xml</TargetPath>
       </BuildOutputInPackage>
+      <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\..\JevSharp.Core\bin\$(Configuration)\$(TargetFramework)\JevSharp.Core.pdb">
+        <TargetPath>JevSharp.Core.pdb</TargetPath>
+      </BuildOutputInPackage>
+      <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\..\JevSharp.Abstractions\bin\$(Configuration)\$(TargetFramework)\JevSharp.Abstractions.pdb">
+        <TargetPath>JevSharp.Abstractions.pdb</TargetPath>
+      </BuildOutputInPackage>
       <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\..\JevSharp.Abstractions\bin\$(Configuration)\$(TargetFramework)\JevSharp.Abstractions.dll">
         <TargetPath>JevSharp.Abstractions.dll</TargetPath>
       </BuildOutputInPackage>

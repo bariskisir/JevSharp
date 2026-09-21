@@ -3,10 +3,10 @@ namespace JevSharp.DependencyInjection.Resilience;
 /// <summary>Configures optional local circuit-breaking and concurrency protection for a named Jev client.</summary>
 public sealed record JevResilienceOptions
 {
-    /// <summary>Gets or initializes the maximum concurrent outbound evaluations.</summary>
+    /// <summary>Gets or sets the maximum concurrent HTTP handler operations, excluding response-body reads and retry waits.</summary>
     public int PermitLimit { get; set; } = 32;
 
-    /// <summary>Gets or initializes the number of evaluations that may wait for a permit.</summary>
+    /// <summary>Gets or sets the number of HTTP attempts that may wait for a permit.</summary>
     public int QueueLimit { get; set; }
 
     /// <summary>Gets or initializes the failure ratio that opens the circuit.</summary>

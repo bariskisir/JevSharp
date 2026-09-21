@@ -98,7 +98,7 @@ public sealed class JevClient : IJevClient
                     provider, time.GetElapsedTime(started).TotalMilliseconds, attempt);
                 return result;
             }
-            catch (JevApiException ex) when (IsRetryable(ex.StatusCode) && attempt < maxAttempts)
+            catch (JevApiException ex) when (HttpFailureClassifier.IsTransient(ex.StatusCode) && attempt < maxAttempts)
             {
                 if (respectRetryAfter && ex.RetryAfter > retryDelay)
                 {
@@ -133,13 +133,9 @@ public sealed class JevClient : IJevClient
                     using (var message = CreateRequest(prepared))
                     {
                         message.Options.Set(new HttpRequestOptionsKey<int>("JevSharp.Attempt"), attempt);
-                        var originalContent = message.Content;
+                        var authenticationGuard = new AuthenticationRequestGuard(message);
                         await authentication.ApplyAsync(message, linked.Token).ConfigureAwait(false);
-                        if (message.RequestUri != endpoint || message.Method != HttpMethod.Post
-                            || !ReferenceEquals(message.Content, originalContent))
-                        {
-                            throw new InvalidOperationException("Authentication must only modify request headers.");
-                        }
+                        authenticationGuard.Validate(message);
                         ApplyProtocolHeaders(message, prepared);
                         using (var response = await httpClient.SendAsync(
                             message, HttpCompletionOption.ResponseHeadersRead, linked.Token).ConfigureAwait(false))
@@ -175,9 +171,7 @@ public sealed class JevClient : IJevClient
                 }
                 catch (HttpRequestException ex)
                 {
-                    var transient = ex.HttpRequestError is HttpRequestError.ConnectionError
-                        or HttpRequestError.NameResolutionError or HttpRequestError.ResponseEnded;
-                    throw new JevTransportException(provider, attempt, transient);
+                    throw new JevTransportException(provider, attempt, HttpFailureClassifier.IsTransient(ex));
                 }
                 catch (IOException)
                 {
@@ -291,8 +285,6 @@ public sealed class JevClient : IJevClient
         }
     }
 
-    /// <summary>Identifies HTTP failures that may succeed on another attempt.</summary>
-    private static bool IsRetryable(HttpStatusCode status) => (int)status is 408 or 429 or 500 or 502 or 503 or 504 or 524 or 529;
     /// <summary>Reads a valid Retry-After duration or HTTP date.</summary>
     private TimeSpan? GetRetryAfter(HttpResponseMessage response)
     {

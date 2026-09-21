@@ -2,6 +2,8 @@
 
 The release workflow publishes one package: `JevSharp`. It contains the public contracts, core implementation, and dependency-injection integration. Author and repository metadata use `bariskisir` and `https://github.com/bariskisir/JevSharp`.
 
+The matching `JevSharp.snupkg` includes portable PDB symbols for all three assemblies: `JevSharp`, `JevSharp.Core`, and `JevSharp.Abstractions`. Package verification checks each symbol entry as well as the assembly and XML documentation assets. Consumers still install only the `JevSharp` package.
+
 ## One-time NuGet configuration
 
 Sign in to nuget.org as **bariskisir** and create a Trusted Publishing policy:

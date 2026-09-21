@@ -4,6 +4,7 @@
     <Description>HTTP clients and TypeSafe, OpenRouter, and Vercel adapters for JevSharp.</Description>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="JevSharp" />
     <ProjectReference Include="../JevSharp.Abstractions/JevSharp.Abstractions.csproj" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>

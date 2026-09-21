@@ -65,6 +65,18 @@ finally {
 if (-not (Test-Path -LiteralPath (Join-Path $feed "$id.$Version.snupkg"))) {
     throw "Missing symbols for $id."
 }
+$symbols = [System.IO.Compression.ZipFile]::OpenRead((Join-Path $feed "$id.$Version.snupkg"))
+try {
+    $symbolNames = @($symbols.Entries | ForEach-Object { $_.FullName })
+    foreach ($assembly in @('JevSharp', 'JevSharp.Core', 'JevSharp.Abstractions')) {
+        if ($symbolNames -notcontains "lib/net10.0/$assembly.pdb") {
+            throw "Missing symbols for $assembly in $id.$Version.snupkg."
+        }
+    }
+}
+finally {
+    $symbols.Dispose()
+}
 
 # Local imports isolate the consumer from repository build/package settings.
 Set-Content -LiteralPath (Join-Path $consumer 'Directory.Build.props') -Value '<Project />' -Encoding UTF8
