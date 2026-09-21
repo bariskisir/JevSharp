@@ -60,10 +60,8 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ steps.login.outputs.NUGET_API_KEY }}
           PACKAGE_VERSION: ${{ needs.version.outputs.package-version }}
         run: |
-          foreach ($id in @('JevSharp.Abstractions', 'JevSharp.Core', 'JevSharp')) {
-            $package = "artifacts/packages/$id.$env:PACKAGE_VERSION.nupkg"
-            dotnet nuget push $package --api-key $env:NUGET_AUTH_TOKEN --source https://api.nuget.org/v3/index.json --skip-duplicate
-            if ($LASTEXITCODE -ne 0) {
-              throw "NuGet publication failed for $id."
-            }
+          $package = "artifacts/packages/JevSharp.$env:PACKAGE_VERSION.nupkg"
+          dotnet nuget push $package --api-key $env:NUGET_AUTH_TOKEN --source https://api.nuget.org/v3/index.json --skip-duplicate
+          if ($LASTEXITCODE -ne 0) {
+            throw 'NuGet publication failed for JevSharp.'
           }

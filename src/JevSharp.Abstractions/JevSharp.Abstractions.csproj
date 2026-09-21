@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <IsPackable>false</IsPackable>
     <Description>Typed contracts, models, authentication, and exceptions for JevSharp.</Description>
   </PropertyGroup>
 </Project>

@@ -1,6 +1,6 @@
 # Publishing JevSharp
 
-The release workflow publishes `JevSharp.Abstractions`, `JevSharp.Core`, and `JevSharp` with one shared version. Consumers install only `JevSharp`. Author and repository metadata use `bariskisir` and `https://github.com/bariskisir/JevSharp`.
+The release workflow publishes one package: `JevSharp`. It contains the public contracts, core implementation, and dependency-injection integration. Author and repository metadata use `bariskisir` and `https://github.com/bariskisir/JevSharp`.
 
 ## One-time NuGet configuration
 
@@ -12,7 +12,7 @@ Sign in to nuget.org as **bariskisir** and create a Trusted Publishing policy:
 | Repository | `JevSharp` |
 | Workflow filename | `publish.yml` |
 | Environment | Leave blank; the workflow does not use an environment |
-| Package scope | `JevSharp*`, or the three exact package IDs |
+| Package scope | `JevSharp` |
 | Permissions | Publish new packages and new versions |
 
 The account must own existing package IDs or be allowed to publish new IDs. Account policy configuration cannot be performed by repository files. No long-lived `NUGET_API_KEY` secret is used. The workflow requests a short-lived key through GitHub OIDC immediately before pushing packages.
@@ -21,9 +21,8 @@ Enable GitHub Actions on `bariskisir/JevSharp`. The workflow uses `contents: rea
 
 ## Release
 
-1. Update the changelog and verify public API compatibility.
-2. Merge the release commit after CI succeeds.
-3. Create and push a version tag pointing to that commit:
+1. Verify public API compatibility and merge the release commit after CI succeeds.
+2. Create and push a version tag pointing to that commit:
 
 ```shell
 git tag v1.0.0
@@ -48,6 +47,6 @@ The verification script performs no remote publication and no live Jev requests.
 ## Troubleshooting
 
 - **OIDC login fails:** confirm username, repository ownership, workflow filename, policy permissions, and `id-token: write` match. Check whether a newly created policy requires activation.
-- **Package ownership fails:** ensure `bariskisir` owns or can create all three IDs and that the policy scope includes them.
+- **Package ownership fails:** ensure `bariskisir` owns or can create the `JevSharp` ID and that the policy scope includes it.
 - **Tests or packaging fail:** no packages are published until the validation job succeeds. Fix the error before tagging another release.
 - **Live verification:** ordinary release CI uses offline fixtures. Run explicitly enabled live tests separately when validating provider changes; their requests may incur charges.

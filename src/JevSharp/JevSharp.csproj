@@ -3,8 +3,28 @@
     <Description>A typed .NET SDK for Jev decisions through TypeSafe, OpenRouter, Vercel, and custom endpoints.</Description>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../JevSharp.Core/JevSharp.Core.csproj" />
+    <ProjectReference Include="../JevSharp.Core/JevSharp.Core.csproj" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeLayerAssemblies</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+  <Target Name="IncludeLayerAssemblies">
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\..\JevSharp.Core\bin\$(Configuration)\$(TargetFramework)\JevSharp.Core.dll">
+        <TargetPath>JevSharp.Core.dll</TargetPath>
+      </BuildOutputInPackage>
+      <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\..\JevSharp.Core\bin\$(Configuration)\$(TargetFramework)\JevSharp.Core.xml">
+        <TargetPath>JevSharp.Core.xml</TargetPath>
+      </BuildOutputInPackage>
+      <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\..\JevSharp.Abstractions\bin\$(Configuration)\$(TargetFramework)\JevSharp.Abstractions.dll">
+        <TargetPath>JevSharp.Abstractions.dll</TargetPath>
+      </BuildOutputInPackage>
+      <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\..\JevSharp.Abstractions\bin\$(Configuration)\$(TargetFramework)\JevSharp.Abstractions.xml">
+        <TargetPath>JevSharp.Abstractions.xml</TargetPath>
+      </BuildOutputInPackage>
+    </ItemGroup>
+  </Target>
 </Project>

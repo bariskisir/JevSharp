@@ -87,7 +87,7 @@ powershell -ExecutionPolicy Bypass -File src/scripts/Verify-Packages.ps1 -Versio
 
 ## Packaging and releases
 
-- The published package set is `JevSharp.Abstractions`, `JevSharp.Core`, and `JevSharp`. Consumers install `JevSharp`.
+- The only published package is `JevSharp`. It contains the Abstractions and Core assemblies, so consumers install and search for one package.
 - `Directory.Build.props` supplies shared package metadata, README, license, icon, XML documentation, symbols, Source Link metadata, and deterministic build settings. Keep package content limited to intended package assets.
 - A packable project requires `JevSharpPackageVersion`; ordinary builds do not. Use the same version for all packages.
 - Release tags use `vMAJOR.MINOR.PATCH`, optionally followed by a SemVer prerelease suffix. `Get-ReleaseVersion.ps1` removes the leading `v` after validation.

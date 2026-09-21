@@ -4,5 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../JevSharp/JevSharp.csproj" />
+    <ProjectReference Include="../../JevSharp.Core/JevSharp.Core.csproj" />
+    <ProjectReference Include="../../JevSharp.Abstractions/JevSharp.Abstractions.csproj" />
   </ItemGroup>
 </Project>

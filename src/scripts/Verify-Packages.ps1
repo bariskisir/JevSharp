@@ -23,42 +23,47 @@ function Invoke-DotNet {
 }
 
 Invoke-DotNet build $solution -c Release "-p:JevSharpPackageVersion=$Version"
-foreach ($id in @('JevSharp.Abstractions', 'JevSharp.Core', 'JevSharp')) {
-    $projectPath = Join-Path $repositoryRoot "src/$id/$id.csproj"
-    Invoke-DotNet pack $projectPath -c Release "-p:JevSharpPackageVersion=$Version" --no-build --no-restore --output $feed
-}
+Invoke-DotNet pack (Join-Path $repositoryRoot 'src/JevSharp/JevSharp.csproj') -c Release "-p:JevSharpPackageVersion=$Version" --no-build --no-restore --output $feed
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-foreach ($id in @('JevSharp.Abstractions', 'JevSharp.Core', 'JevSharp')) {
-    $archivePath = Join-Path $feed "$id.$Version.nupkg"
-    $archive = [System.IO.Compression.ZipFile]::OpenRead($archivePath)
+$id = 'JevSharp'
+$archivePath = Join-Path $feed "$id.$Version.nupkg"
+$archive = [System.IO.Compression.ZipFile]::OpenRead($archivePath)
+try {
+    $names = @($archive.Entries | ForEach-Object { $_.FullName })
+    foreach ($expected in @(
+        'NuGetREADME.md',
+        'LICENSE',
+        'lib/net10.0/JevSharp.dll',
+        'lib/net10.0/JevSharp.xml',
+        'lib/net10.0/JevSharp.Core.dll',
+        'lib/net10.0/JevSharp.Core.xml',
+        'lib/net10.0/JevSharp.Abstractions.dll',
+        'lib/net10.0/JevSharp.Abstractions.xml',
+        'JevSharp.nuspec')) {
+        if ($names -notcontains $expected) {
+            throw "$archivePath is missing $expected."
+        }
+    }
+    $reader = New-Object System.IO.StreamReader($archive.GetEntry("$id.nuspec").Open())
     try {
-        $names = @($archive.Entries | ForEach-Object { $_.FullName })
-        foreach ($expected in @('README.md', 'LICENSE', "lib/net10.0/$id.dll", "lib/net10.0/$id.xml", "$id.nuspec")) {
-            if ($names -notcontains $expected) {
-                throw "$archivePath is missing $expected."
-            }
-        }
-        $reader = New-Object System.IO.StreamReader($archive.GetEntry("$id.nuspec").Open())
-        try {
-            [xml] $manifest = $reader.ReadToEnd()
-        }
-        finally {
-            $reader.Dispose()
-        }
-        $metadata = $manifest.package.metadata
-        if ($metadata.id -ne $id -or $metadata.version -ne $Version -or $metadata.authors -ne 'bariskisir' -or $metadata.license.InnerText -ne 'MIT') {
-            throw "Unexpected NuGet metadata in $archivePath."
-        }
-        if ($metadata.repository.url -ne 'https://github.com/bariskisir/JevSharp') {
-            throw "Unexpected repository metadata in $archivePath."
-        }
+        [xml] $manifest = $reader.ReadToEnd()
     }
     finally {
-        $archive.Dispose()
+        $reader.Dispose()
     }
-    if (-not (Test-Path -LiteralPath (Join-Path $feed "$id.$Version.snupkg"))) {
-        throw "Missing symbols for $id."
+    $metadata = $manifest.package.metadata
+    if ($metadata.id -ne $id -or $metadata.version -ne $Version -or $metadata.authors -ne 'bariskisir' -or $metadata.license.InnerText -ne 'MIT') {
+        throw "Unexpected NuGet metadata in $archivePath."
     }
+    if ($metadata.repository.url -ne 'https://github.com/bariskisir/JevSharp') {
+        throw "Unexpected repository metadata in $archivePath."
+    }
+}
+finally {
+    $archive.Dispose()
+}
+if (-not (Test-Path -LiteralPath (Join-Path $feed "$id.$Version.snupkg"))) {
+    throw "Missing symbols for $id."
 }
 
 # Local imports isolate the consumer from repository build/package settings.

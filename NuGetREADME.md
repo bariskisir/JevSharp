@@ -1,20 +1,12 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/bariskisir/JevSharp/master/assets/jevsharp-logo.svg" alt="JevSharp logo" width="88">
-</p>
+# JevSharp
 
-<h1 align="center">JevSharp</h1>
+![JevSharp logo](https://raw.githubusercontent.com/bariskisir/JevSharp/master/assets/jevsharp-logo.png)
 
-<p align="center">
-  .NET 10 SDK for Jev decisions through TypeSafe, OpenRouter, Vercel AI Gateway, and compatible endpoints.
-</p>
+.NET 10 SDK for Jev decisions through TypeSafe, OpenRouter, Vercel AI Gateway, and compatible endpoints.
 
-<p align="center">
-  <a href="https://github.com/bariskisir/JevSharp/actions/workflows/ci.yml"><img src="https://github.com/bariskisir/JevSharp/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
-  <a href="https://www.nuget.org/packages/JevSharp"><img src="https://img.shields.io/nuget/v/JevSharp.svg" alt="NuGet version"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
-</p>
-
----
+[![CI status](https://github.com/bariskisir/JevSharp/actions/workflows/ci.yml/badge.svg)](https://github.com/bariskisir/JevSharp/actions/workflows/ci.yml)
+[![NuGet version](https://img.shields.io/nuget/v/JevSharp.svg)](https://www.nuget.org/packages/JevSharp)
+[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bariskisir/JevSharp/blob/master/LICENSE)
 
 ## Install
 
@@ -62,9 +54,9 @@ using (var client = new JevClient(options))
 
 ## Documentation
 
-- [Providers and models](docs/PROVIDERS.md)
-- [Requests and responses](docs/REQUESTS.md)
-- [Dependency injection, failover, and resilience](docs/DEPENDENCY-INJECTION.md)
-- [Custom endpoints, authentication, and protocols](docs/CUSTOM-PROTOCOLS.md)
-- [Retries, errors, and logging](docs/RELIABILITY.md)
-- [Development, samples, and releases](docs/DEVELOPMENT.md)
+- [Providers and models](https://github.com/bariskisir/JevSharp/blob/master/docs/PROVIDERS.md)
+- [Requests and responses](https://github.com/bariskisir/JevSharp/blob/master/docs/REQUESTS.md)
+- [Dependency injection, failover, and resilience](https://github.com/bariskisir/JevSharp/blob/master/docs/DEPENDENCY-INJECTION.md)
+- [Custom endpoints, authentication, and protocols](https://github.com/bariskisir/JevSharp/blob/master/docs/CUSTOM-PROTOCOLS.md)
+- [Retries, errors, and logging](https://github.com/bariskisir/JevSharp/blob/master/docs/RELIABILITY.md)
+- [Development, samples, and releases](https://github.com/bariskisir/JevSharp/blob/master/docs/DEVELOPMENT.md)
