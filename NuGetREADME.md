@@ -6,6 +6,7 @@
 
 [![CI status](https://github.com/bariskisir/JevSharp/actions/workflows/ci.yml/badge.svg)](https://github.com/bariskisir/JevSharp/actions/workflows/ci.yml)
 [![NuGet version](https://img.shields.io/nuget/v/JevSharp.svg)](https://www.nuget.org/packages/JevSharp)
+[![NuGet downloads](https://img.shields.io/nuget/dt/JevSharp.svg)](https://www.nuget.org/packages/JevSharp)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bariskisir/JevSharp/blob/master/LICENSE)
 
 ## Install

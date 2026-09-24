@@ -11,6 +11,7 @@
 <p align="center">
   <a href="https://github.com/bariskisir/JevSharp/actions/workflows/ci.yml"><img src="https://github.com/bariskisir/JevSharp/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
   <a href="https://www.nuget.org/packages/JevSharp"><img src="https://img.shields.io/nuget/v/JevSharp.svg" alt="NuGet version"></a>
+  <a href="https://www.nuget.org/packages/JevSharp"><img src="https://img.shields.io/nuget/dt/JevSharp.svg" alt="NuGet downloads"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
 </p>
 
