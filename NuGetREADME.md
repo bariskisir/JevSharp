@@ -53,6 +53,12 @@ using (var client = new JevClient(options))
 }
 ```
 
+OpenRouter defaults to a Jev model, but any other OpenRouter model works too. Just pass its model ID:
+
+```csharp
+var options = new JevClientOptions().UseOpenRouter(apiKey, "openai/gpt-6-luna-decisions");
+```
+
 ## Documentation
 
 - [Providers and models](https://github.com/bariskisir/JevSharp/blob/master/docs/PROVIDERS.md)

@@ -20,6 +20,12 @@ options.Model = configuredModelId;
 var specificRequest = request with { Model = configuredModelId };
 ```
 
+OpenRouter also works with non-Jev models. Just pass the OpenRouter model ID:
+
+```csharp
+var options = new JevClientOptions().UseOpenRouter(apiKey, "openai/gpt-6-luna-decisions");
+```
+
 Model selection is request override, then client configuration, then provider default. Custom endpoints require an explicit model. Empty IDs are rejected; other IDs pass through unchanged. Constants are a maintained catalog and upstream latest/preview aliases can change. `RequestedModel` is sent to the provider; `Model` is reported by it and may be absent.
 
 ## Provider differences
