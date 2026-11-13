@@ -15,6 +15,8 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
 </p>
 
+https://github.com/user-attachments/assets/a6685b51-9a28-454a-98aa-3852baaa0988
+
 ---
 
 ## Install
